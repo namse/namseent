@@ -15,18 +15,15 @@ export default class DevServer {
   private readonly websockets: Set<ws> = new Set();
 
   constructor() {
-    this.router.get(['/index.html', '/'], this.serveHotReloadInjectedIndexHtml);
+    this.router.get(["/index.html", "/"], this.serveHotReloadInjectedIndexHtml);
 
-    this.server
-      .use(this.router.routes())
-      .use(serve(outdir))
+    this.server.use(this.router.routes()).use(serve(outdir));
 
-    this.server.ws
-      .use(async (ctx, next) => {
-        this.websockets.add(ctx.websocket);
-        ctx.websocket.onclose = () => this.websockets.delete(ctx.websocket);
-        await next();
-      })
+    this.server.ws.use(async (ctx, next) => {
+      this.websockets.add(ctx.websocket);
+      ctx.websocket.onclose = () => this.websockets.delete(ctx.websocket);
+      await next();
+    });
   }
 
   public start(port: number = 1234) {
@@ -34,18 +31,24 @@ export default class DevServer {
   }
 
   public emitHotReload() {
-    this.websockets.forEach(websocket => websocket.send('hotReload'));
+    this.websockets.forEach((websocket) => websocket.send("hotReload"));
   }
 
-  private serveHotReloadInjectedIndexHtml: Router.IMiddleware = async (ctx, next) => {
-    const html = parse(await fs.readFile(path.join(outdir, 'index.html'), 'utf8'));
-    const body = html.querySelector('body');
+  private serveHotReloadInjectedIndexHtml: Router.IMiddleware = async (
+    ctx,
+    next,
+  ) => {
+    const html = parse(
+      await fs.readFile(path.join(outdir, "index.html"), "utf8"),
+    );
+    const body = html.querySelector("body");
     if (!body) {
       await next();
+      return;
     }
-    body.insertAdjacentHTML('beforeend', `<script>${hotReloadScript}</script>`);
+    body.insertAdjacentHTML("beforeend", `<script>${hotReloadScript}</script>`);
     await next();
 
     ctx.body = html.toString();
-  }
+  };
 }
