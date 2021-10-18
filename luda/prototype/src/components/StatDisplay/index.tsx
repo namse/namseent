@@ -21,22 +21,8 @@ export default function StatDisplay(props: StatDisplayProps) {
         return showChangedOnly && !statIncrement ? undefined : (
           <StatBar
             label={key}
-            value={
-              key == "stress"
-                ? (value / stat.mentality) * 100
-                : key === "tiredness"
-                ? (value / stat.health) * 100
-                : value
-            }
-            increment={
-              statIncrement
-                ? key == "stress"
-                  ? (statIncrement / stat.mentality) * 100
-                  : key === "tiredness"
-                  ? (statIncrement / stat.health) * 100
-                  : statIncrement
-                : undefined
-            }
+            value={value}
+            increment={statIncrement}
             key={`stat-${key}-${value}-${statIncrement}`}
           />
         );

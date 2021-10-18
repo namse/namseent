@@ -91,49 +91,25 @@ export default class TrainingSchedule extends BaseSchedule {
         case "vocal": {
           increment.vocal =
             appropriateDifficultyFactor * 1 * (success ? 1 : 0.25) * stepFactor;
-          increment.mentality =
-            appropriateDifficultyFactor *
-            0.5 *
-            (success ? 1 : 0.25) *
-            stepFactor;
-          increment.stress = 3 * (success ? 0.75 : 1) * stepFactor;
-          increment.tiredness = 2 * (success ? 0.75 : 1) * stepFactor;
+          increment.stress = 25 * (success ? 0.75 : 1) * stepFactor;
           break;
         }
         case "dance": {
           increment.dance =
             appropriateDifficultyFactor * 1 * (success ? 1 : 0.25) * stepFactor;
-          increment.health =
-            appropriateDifficultyFactor *
-            0.75 *
-            (success ? 1 : 0.25) *
-            stepFactor;
-          increment.stress = 4 * (success ? 0.75 : 1) * stepFactor;
-          increment.tiredness = 3 * (success ? 0.75 : 1) * stepFactor;
+          increment.stress = 35 * (success ? 0.75 : 1) * stepFactor;
           break;
         }
         case "weight": {
           increment.visual =
             appropriateDifficultyFactor * 1 * (success ? 1 : 0.25) * stepFactor;
-          increment.health =
-            appropriateDifficultyFactor *
-            0.75 *
-            (success ? 1 : 0.25) *
-            stepFactor;
-          increment.stress = 3 * (success ? 0.75 : 1) * stepFactor;
-          increment.tiredness = 4 * (success ? 0.75 : 1) * stepFactor;
+          increment.stress = 35 * (success ? 0.75 : 1) * stepFactor;
           break;
         }
         default: {
-          increment.sense =
+          increment.vocal =
             appropriateDifficultyFactor * 1 * (success ? 1 : 0.25) * stepFactor;
-          increment.mentality =
-            appropriateDifficultyFactor *
-            0.5 *
-            (success ? 1 : 0.25) *
-            stepFactor;
-          increment.stress = 3 * (success ? 0.75 : 1) * stepFactor;
-          increment.tiredness = 2 * (success ? 0.75 : 1) * stepFactor;
+          increment.stress = 25 * (success ? 0.75 : 1) * stepFactor;
           break;
         }
       }
@@ -158,23 +134,17 @@ export default class TrainingSchedule extends BaseSchedule {
   }
 
   didSucceed(stat: StatState) {
-    const { mentality, stress, health, tiredness, will } = stat;
-    const mentalityFactor = constrain(
-      (mentality - stress + mentality / 4) / mentality,
-    );
-    const healthFactor = constrain((health - tiredness + health / 4) / health);
-    return (
-      Math.random() <
-      Math.min(mentalityFactor, healthFactor) / 2 + will / 100 / 2
-    );
+    const { stress, will } = stat;
+    const stressFactor = constrain((100 - stress + 25) / 100);
+    return Math.random() < stressFactor / 2 + will / 100 / 2;
   }
 
   getAppropriateDifficultyFactor(stat: StatState) {
     const targetStatMap: Record<TrainingType, number> = {
       vocal: stat.vocal,
       dance: stat.dance,
-      weight: stat.health,
-      songWrite: stat.sense,
+      weight: stat.visual,
+      songWrite: stat.vocal,
     };
     const targetStat = targetStatMap[this.subtype] / 100;
     return Math.max(

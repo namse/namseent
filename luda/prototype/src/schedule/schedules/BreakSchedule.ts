@@ -49,47 +49,33 @@ export default class BreakSchedule extends BaseSchedule {
       // TODO: spend money
       switch (this.subtype) {
         case "walk": {
-          obtain.health = 0.25 * stepFactor;
           obtain.will = 0.5 * stepFactor;
-          obtain.stress = -2 * stepFactor;
+          obtain.stress = -10 * stepFactor;
           break;
         }
         case "cafe": {
           obtain.visual = 0.25 * stepFactor;
-          obtain.health = -0.25 * stepFactor;
           obtain.will = 0.5 * stepFactor;
-          obtain.stress = -3 * stepFactor;
+          obtain.stress = -15 * stepFactor;
           break;
         }
         case "game": {
           obtain.visual = -0.25 * stepFactor;
-          obtain.sense = 0.5 * stepFactor;
-          obtain.mentality = -0.75 * stepFactor;
-          obtain.health = -0.5 * stepFactor;
-          obtain.stress = -5 * stepFactor;
+          obtain.stress = -25 * stepFactor;
           break;
         }
         case "reading": {
           obtain.visual = -0.25 * stepFactor;
-          obtain.mentality = 0.5 * stepFactor;
-          obtain.health = -0.5 * stepFactor;
-          obtain.tiredness = -3 * stepFactor;
+          obtain.stress = -15 * stepFactor;
           break;
         }
         case "nap": {
           obtain.visual = -0.5 * stepFactor;
-          obtain.mentality = -0.75 * stepFactor;
-          obtain.health = -1 * stepFactor;
-          obtain.stress = -4 * stepFactor;
-          obtain.tiredness = -5 * stepFactor;
+          obtain.stress = -45 * stepFactor;
           break;
         }
         default: {
-          obtain.sense = 0.5 * stepFactor;
-          obtain.mentality = -0.5 * stepFactor;
-          obtain.health = -0.5 * stepFactor;
-          obtain.stress = -3 * stepFactor;
-          obtain.tiredness = -3 * stepFactor;
+          obtain.stress = -30 * stepFactor;
           break;
         }
       }

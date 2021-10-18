@@ -8,23 +8,12 @@ type StatBarProps = {
   increment?: number;
 };
 
-const positiveStat: (keyof StatState)[] = [
-  "vocal",
-  "dance",
-  "visual",
-  "sense",
-  "mentality",
-  "health",
-  "will",
-];
+const positiveStat: (keyof StatState)[] = ["vocal", "dance", "visual", "will"];
 
 const statMaxLevel: Partial<Record<keyof StatState, number>> = {
   vocal: 20,
   dance: 20,
   visual: 20,
-  sense: 20,
-  mentality: 20,
-  health: 20,
   will: 20,
 };
 
