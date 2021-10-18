@@ -188,7 +188,11 @@ export default function MinijobWindow() {
             <Divider variant="middle" />
             <CardContent>
               <Typography variant="h5">능력치</Typography>
-              <StatDisplay showChangedOnly increment={increment} />
+              <StatDisplay
+                showChangedOnly
+                increment={increment}
+                showFigure={scheduleDone}
+              />
               <Button
                 disabled={!scheduleDone}
                 fullWidth

@@ -7,10 +7,11 @@ import StatBar from "./StatBar";
 type StatDisplayProps = {
   increment?: Partial<StatState>;
   showChangedOnly?: boolean;
+  showFigure?: boolean;
 };
 
 export default function StatDisplay(props: StatDisplayProps) {
-  const { increment, showChangedOnly } = props;
+  const { increment, showChangedOnly, showFigure } = props;
   const [state, update] = useStore();
   const { stat } = state;
   return (
@@ -23,6 +24,7 @@ export default function StatDisplay(props: StatDisplayProps) {
             label={key}
             value={value}
             increment={statIncrement}
+            showFigure={showFigure}
             key={`stat-${key}-${value}-${statIncrement}`}
           />
         );

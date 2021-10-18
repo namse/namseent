@@ -6,6 +6,7 @@ type StatBarProps = {
   label: keyof StatState;
   value: number;
   increment?: number;
+  showFigure?: boolean;
 };
 
 const positiveStat: (keyof StatState)[] = ["vocal", "dance", "visual", "will"];
@@ -18,7 +19,7 @@ const statMaxLevel: Partial<Record<keyof StatState, number>> = {
 };
 
 export default function StatBar(props: StatBarProps) {
-  const { label, value, increment: increment_ } = props;
+  const { label, value, increment: increment_, showFigure } = props;
 
   const increment = increment_ || 0;
   const maxLevel = statMaxLevel[label] || 1;
@@ -64,20 +65,24 @@ export default function StatBar(props: StatBarProps) {
           valueBuffer={maxPercent}
         />
       </Grid>
-      <Grid item>
-        <Typography variant="body2" color="textSecondary">
-          {(increment > 0 ? maxPercent : minPercent).toFixed(0)}%
-        </Typography>
-      </Grid>
-      <Grid item>
-        <Typography variant="body2" color={color}>
-          {increment
-            ? `(${increment > 0 ? "+" : ""}${incrementPercent.toFixed(0)}%)${
-                increment > 0 ? "▲" : "▼"
-              }`
-            : undefined}
-        </Typography>
-      </Grid>
+      {showFigure ? (
+        <Grid item>
+          <Typography variant="body2" color="textSecondary">
+            {(increment > 0 ? maxPercent : minPercent).toFixed(0)}%
+          </Typography>
+        </Grid>
+      ) : undefined}
+      {showFigure ? (
+        <Grid item>
+          <Typography variant="body2" color={color}>
+            {increment
+              ? `(${increment > 0 ? "+" : ""}${incrementPercent.toFixed(0)}%)${
+                  increment > 0 ? "▲" : "▼"
+                }`
+              : undefined}
+          </Typography>
+        </Grid>
+      ) : undefined}
     </Grid>
   );
 }
