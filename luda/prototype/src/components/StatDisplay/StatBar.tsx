@@ -1,3 +1,4 @@
+import { Badge } from ".pnpm/@mui+material@5.0.4_3d4af7eb5b86aa12d9008f964c673b75/node_modules/@mui/material";
 import { Typography, LinearProgress, Grid } from "@material-ui/core";
 import React from "react";
 import { StatState } from "../../store/State/StatState";
@@ -43,9 +44,21 @@ export default function StatBar(props: StatBarProps) {
   return (
     <Grid container alignItems="center" spacing={2}>
       <Grid item>
-        <Typography variant="body2" color="textSecondary">
-          {`${label} ${maxLevel !== 1 ? `Lv.${nextLevel}` : ""}`}
-        </Typography>
+        <Badge
+          badgeContent={
+            nextLevel === currentLevel
+              ? undefined
+              : nextLevel > currentLevel
+              ? "+"
+              : "-"
+          }
+          color="primary"
+          anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        >
+          <Typography variant="body2" color="textSecondary">
+            {`${label} ${maxLevel !== 1 ? `Lv.${nextLevel}` : ""}`}
+          </Typography>
+        </Badge>
       </Grid>
       <Grid item xs>
         <LinearProgress
