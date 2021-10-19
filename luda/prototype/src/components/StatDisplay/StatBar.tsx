@@ -1,5 +1,12 @@
 import { Badge } from ".pnpm/@mui+material@5.0.4_3d4af7eb5b86aa12d9008f964c673b75/node_modules/@mui/material";
 import { Typography, LinearProgress, Grid } from "@material-ui/core";
+import {
+  EmojiPeople,
+  Face,
+  FlashOn,
+  Mic,
+  ReportProblem,
+} from "@material-ui/icons";
 import React from "react";
 import { StatState } from "../../store/State/StatState";
 
@@ -17,6 +24,14 @@ const statMaxLevel: Partial<Record<keyof StatState, number>> = {
   dance: 20,
   visual: 20,
   will: 20,
+};
+
+const statIcon: Record<keyof StatState, JSX.Element> = {
+  vocal: <Mic />,
+  dance: <EmojiPeople />,
+  visual: <Face />,
+  stress: <ReportProblem />,
+  will: <FlashOn />,
 };
 
 export default function StatBar(props: StatBarProps) {
@@ -55,6 +70,7 @@ export default function StatBar(props: StatBarProps) {
           color="primary"
           anchorOrigin={{ vertical: "top", horizontal: "left" }}
         >
+          {statIcon[label]}
           <Typography variant="body2" color="textSecondary">
             {`${label} ${maxLevel !== 1 ? `Lv.${nextLevel}` : ""}`}
           </Typography>
