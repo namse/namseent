@@ -1,4 +1,8 @@
-import { Badge } from ".pnpm/@mui+material@5.0.4_3d4af7eb5b86aa12d9008f964c673b75/node_modules/@mui/material";
+import {
+  Badge,
+  TableCell,
+  TableRow,
+} from ".pnpm/@mui+material@5.0.4_3d4af7eb5b86aa12d9008f964c673b75/node_modules/@mui/material";
 import { Typography, LinearProgress, Grid } from "@material-ui/core";
 import {
   EmojiPeople,
@@ -57,8 +61,8 @@ export default function StatBar(props: StatBarProps) {
     : undefined;
 
   return (
-    <Grid container alignItems="center" spacing={2}>
-      <Grid item>
+    <TableRow>
+      <TableCell>
         <Badge
           badgeContent={
             nextLevel === currentLevel
@@ -71,27 +75,27 @@ export default function StatBar(props: StatBarProps) {
           anchorOrigin={{ vertical: "top", horizontal: "left" }}
         >
           {statIcon[label]}
-          <Typography variant="body2" color="textSecondary">
+          <Typography variant="body2" color="textSecondary" noWrap>
             {`${label} ${maxLevel !== 1 ? `Lv.${nextLevel}` : ""}`}
           </Typography>
         </Badge>
-      </Grid>
-      <Grid item xs>
+      </TableCell>
+      <TableCell sx={{ width: "100%" }}>
         <LinearProgress
           color={color}
           variant="determinate"
           value={currentPercent}
         />
-      </Grid>
+      </TableCell>
       {showFigure ? (
-        <Grid item>
+        <TableCell>
           <Typography variant="body2" color="textSecondary">
             {currentPercent.toFixed(0)}%
           </Typography>
-        </Grid>
+        </TableCell>
       ) : undefined}
       {showFigure ? (
-        <Grid item>
+        <TableCell>
           <Typography variant="body2" color={color}>
             {increment
               ? `(${increment > 0 ? "+" : ""}${incrementPercent.toFixed(0)}%)${
@@ -99,8 +103,8 @@ export default function StatBar(props: StatBarProps) {
                 }`
               : undefined}
           </Typography>
-        </Grid>
+        </TableCell>
       ) : undefined}
-    </Grid>
+    </TableRow>
   );
 }
