@@ -22,22 +22,12 @@ export default function StatBar(props: StatBarProps) {
   const { label, value, increment: increment_, showFigure } = props;
 
   const increment = increment_ || 0;
+  const nextValue = value + increment;
   const maxLevel = statMaxLevel[label] || 1;
   const maxValue = 100 / maxLevel;
   const currentLevel = Math.floor(value / maxValue);
   const nextLevel = Math.floor((value + increment) / maxValue);
-  const { min, max } =
-    currentLevel === nextLevel
-      ? {
-          min: Math.min(value, value + increment) % maxValue,
-          max: Math.max(value, value + increment) % maxValue,
-        }
-      : nextLevel > currentLevel
-      ? { min: 0, max: (value + increment) % maxValue }
-      : { min: (value + increment) % maxValue, max: maxValue };
-
-  const minPercent = (min / maxValue) * 100;
-  const maxPercent = (max / maxValue) * 100;
+  const currentPercent = ((nextValue % maxValue) / maxValue) * 100;
   const incrementPercent = (increment / maxValue) * 100;
 
   const color = increment
@@ -60,15 +50,14 @@ export default function StatBar(props: StatBarProps) {
       <Grid item xs>
         <LinearProgress
           color={color}
-          variant={increment ? "buffer" : "determinate"}
-          value={minPercent}
-          valueBuffer={maxPercent}
+          variant="determinate"
+          value={currentPercent}
         />
       </Grid>
       {showFigure ? (
         <Grid item>
           <Typography variant="body2" color="textSecondary">
-            {(increment > 0 ? maxPercent : minPercent).toFixed(0)}%
+            {currentPercent.toFixed(0)}%
           </Typography>
         </Grid>
       ) : undefined}
