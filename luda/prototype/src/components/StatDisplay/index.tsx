@@ -31,7 +31,7 @@ export default function StatDisplay(props: StatDisplayProps) {
                 value={value}
                 increment={statIncrement}
                 showFigure={showFigure}
-                key={`stat-${key}-${value}-${statIncrement}`}
+                key={`stat-${key}`}
               />
             );
           })}
