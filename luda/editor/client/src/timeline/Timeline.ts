@@ -10,12 +10,20 @@ import {
 import { Vector } from "namui/lib/type";
 import { Clip } from "../type";
 import { renderContextMenu } from "./contextMenu/renderContextMenu";
+import { PlaybackTimeView } from "./PlaybackTimeView";
+import { Playhead } from "./Playhead";
 import { TimelineBody } from "./renderTimelineBody";
 import { renderTimelineHeader } from "./renderTimelineHeader";
 import { TimeRuler } from "./timeRuler/TimeRuler";
 import { TimelineState } from "./type";
 
-export const Timeline: Render<TimelineState> = (state) => {
+export const Timeline: Render<
+  TimelineState,
+  {
+    changePlaybackTimeMs: (playbackTimeMs: number) => void;
+    playbackTimeMs: number;
+  }
+> = (state, props) => {
   /*
      HEADER         BODY
     ┌──────────────┬────────────────┐
@@ -47,24 +55,38 @@ export const Timeline: Render<TimelineState> = (state) => {
       },
     }),
     Translate({ x, y }, [
+      PlaybackTimeView(
+        {},
+        {
+          playbackTimeMs: props.playbackTimeMs,
+          layout: {
+            x: 0,
+            y: 0,
+            width: headerWidth,
+            height: state.layout.timeRulerHeight,
+          },
+        },
+      ),
       Translate(
         {
           x: headerWidth,
           y: 0,
         },
-        TimeRuler(
-          {},
-          {
-            layout: {
-              x: 0,
-              y: 0,
-              width: bodyWidth,
-              height: state.layout.timeRulerHeight,
+        [
+          TimeRuler(
+            {},
+            {
+              layout: {
+                x: 0,
+                y: 0,
+                width: bodyWidth,
+                height: state.layout.timeRulerHeight,
+              },
+              msPerPixel: state.layout.msPerPixel,
+              startMs: state.layout.startMs,
             },
-            msPerPixel: state.layout.msPerPixel,
-            startMs: state.layout.startMs,
-          },
-        ),
+          ),
+        ],
       ),
       Translate(
         {
@@ -94,6 +116,23 @@ export const Timeline: Render<TimelineState> = (state) => {
             ),
           ),
         ],
+      ),
+    ]),
+    Translate({ x: x + headerWidth, y }, [
+      Playhead(
+        {
+          playbackTimeMs: props.playbackTimeMs,
+        },
+        {
+          timeRulerHeight: state.layout.timeRulerHeight,
+          pixelPerMs: 1 / state.layout.msPerPixel,
+          startMs: state.layout.startMs,
+          trackBodyWhSize: {
+            width: bodyWidth,
+            height,
+          },
+          changePlaybackTimeMs: props.changePlaybackTimeMs,
+        },
       ),
     ]),
     AfterDraw(({ translated }) => {

@@ -8,7 +8,6 @@ import { getGcCanvasKitPackage } from "./getGcCanvasKitPackage";
 import { getSavedState } from "./build/hotReload/getSavedState";
 import { setHotReload } from "./build/hotReload/hotReload";
 import { isHotReloaded } from "./build/hotReload/isHotReloaded";
-import { ImageLoader } from "./image/ImageLoader";
 import { EngineContext, Render } from "./type";
 import { BuildErrorNotifier } from "./build/BuildErrorNotifier";
 import { webEngine } from "./engine/webEngine";
@@ -86,7 +85,7 @@ export async function startEngine<TState>(
     engineInternal.init(engineContext);
 
     // TODO : Move this into webEngine
-    canvasElement.onclick = (event) => {
+    document.onclick = (event) => {
       handleMouseEvent(
         engineContext,
         toNamuiMouseEvent(event),
@@ -94,22 +93,18 @@ export async function startEngine<TState>(
         "onClickOut",
       );
     };
-    canvasElement.onmousemove = (event) => {
-      handleMouseEvent(
-        engineContext,
-        toNamuiMouseEvent(event),
-        "onMouseMoveIn",
-        "onMouseMoveOut",
-      );
-    };
-    canvasElement.onmousedown = (event) => {
-      handleMouseEvent(engineContext, toNamuiMouseEvent(event), "onMouseDown");
-    };
-    canvasElement.onmouseup = (event) => {
-      handleMouseEvent(engineContext, toNamuiMouseEvent(event), "onMouseUp");
-    };
-    canvasElement.onwheel = (event) => {};
-    canvasElement.oncontextmenu = (event) => {
+    아래거 해줄 매니저를 하나 만들자.
+    webEngine.mouseEvent.onMouseDown((event) => {
+      console.log("onmousedown");
+      handleMouseEvent(engineContext, event, "onMouseDown");
+    });
+    webEngine.mouseEvent.onMouseUp((event) => {
+      handleMouseEvent(engineContext, event, "onMouseUp");
+    });
+    webEngine.mouseEvent.onMouseMove((event) => {
+      handleMouseEvent(engineContext, event, "onMouseMoveIn", "onMouseMoveOut");
+    });
+    document.oncontextmenu = (event) => {
       event.preventDefault();
     };
 

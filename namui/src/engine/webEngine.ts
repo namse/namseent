@@ -12,16 +12,26 @@ import { WebTextInputManager } from "../textInput/WebTextInputManager";
 import { EngineContext } from "../type";
 import { RenderManager } from "../managers/render/RenderManager";
 
+const mousePointerManager = new WebMousePointerManager();
+const mousePositionManager = new WebMousePositionManager();
+const mouseButtonManager = new MouseButtonManager();
+const mouseEventManager = new WebMouseEventManager(mouseButtonManager);
+const screenManager = new WebScreenManager();
+const wheelManager = new WebWheelManager();
+const keyboardManager = new WebKeyboardManager();
+const textInputManager = new WebTextInputManager();
+const renderManager = new RenderManager();
+
 const managerMap = {
-  mousePointer: new WebMousePointerManager(),
-  mousePosition: new WebMousePositionManager(),
-  mouseEvent: new WebMouseEventManager(),
-  screen: new WebScreenManager(),
-  wheel: new WebWheelManager(),
-  keyboard: new WebKeyboardManager(),
-  mouseButton: new MouseButtonManager(),
-  textInput: new WebTextInputManager(),
-  render: new RenderManager(),
+  mousePointer: mousePointerManager,
+  mousePosition: mousePositionManager,
+  mouseEvent: mouseEventManager,
+  screen: screenManager,
+  wheel: wheelManager,
+  keyboard: keyboardManager,
+  mouseButton: mouseButtonManager,
+  textInput: textInputManager,
+  render: renderManager,
 } as const;
 
 const managers = Object.values(managerMap) as IManagerInternal[];
